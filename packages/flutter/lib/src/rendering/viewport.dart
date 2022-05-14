@@ -1254,7 +1254,7 @@ class RenderViewport extends RenderViewportBase<SliverPhysicalContainerParentDat
   /// list, if any, is used.
   ///
   /// The [offset] must be specified. For testing purposes, consider passing a
-  /// [new ViewportOffset.zero] or [new ViewportOffset.fixed].
+  /// [ViewportOffset.zero] or [ViewportOffset.fixed].
   RenderViewport({
     AxisDirection axisDirection = AxisDirection.down,
     required AxisDirection crossAxisDirection,
@@ -1718,37 +1718,40 @@ class RenderViewport extends RenderViewportBase<SliverPhysicalContainerParentDat
   }
 
   @override
-  Iterable<RenderSliver> get childrenInPaintOrder sync* {
+  Iterable<RenderSliver> get childrenInPaintOrder {
+    final List<RenderSliver> children = <RenderSliver>[];
     if (firstChild == null)
-      return;
+      return children;
     RenderSliver? child = firstChild;
     while (child != center) {
-      yield child!;
+      children.add(child!);
       child = childAfter(child);
     }
     child = lastChild;
     while (true) {
-      yield child!;
+      children.add(child!);
       if (child == center)
-        return;
+        return children;
       child = childBefore(child);
     }
   }
 
   @override
-  Iterable<RenderSliver> get childrenInHitTestOrder sync* {
+  Iterable<RenderSliver> get childrenInHitTestOrder {
+    final List<RenderSliver> children = <RenderSliver>[];
     if (firstChild == null)
-      return;
+      return children;
     RenderSliver? child = center;
     while (child != null) {
-      yield child;
+      children.add(child);
       child = childAfter(child);
     }
     child = childBefore(center!);
     while (child != null) {
-      yield child;
+      children.add(child);
       child = childBefore(child);
     }
+    return children;
   }
 
   @override
@@ -1788,7 +1791,7 @@ class RenderShrinkWrappingViewport extends RenderViewportBase<SliverLogicalConta
   /// contents.
   ///
   /// The [offset] must be specified. For testing purposes, consider passing a
-  /// [new ViewportOffset.zero] or [new ViewportOffset.fixed].
+  /// [ViewportOffset.zero] or [ViewportOffset.fixed].
   RenderShrinkWrappingViewport({
     AxisDirection axisDirection = AxisDirection.down,
     required AxisDirection crossAxisDirection,
@@ -2030,20 +2033,24 @@ class RenderShrinkWrappingViewport extends RenderViewportBase<SliverLogicalConta
   String labelForChild(int index) => 'child $index';
 
   @override
-  Iterable<RenderSliver> get childrenInPaintOrder sync* {
+  Iterable<RenderSliver> get childrenInPaintOrder {
+    final List<RenderSliver> children = <RenderSliver>[];
     RenderSliver? child = lastChild;
     while (child != null) {
-      yield child;
+      children.add(child);
       child = childBefore(child);
     }
+    return children;
   }
 
   @override
-  Iterable<RenderSliver> get childrenInHitTestOrder sync* {
+  Iterable<RenderSliver> get childrenInHitTestOrder {
+    final List<RenderSliver> children = <RenderSliver>[];
     RenderSliver? child = firstChild;
     while (child != null) {
-      yield child;
+      children.add(child);
       child = childAfter(child);
     }
+    return children;
   }
 }

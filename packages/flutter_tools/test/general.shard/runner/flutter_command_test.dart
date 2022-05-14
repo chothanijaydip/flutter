@@ -116,7 +116,7 @@ void main() {
       final CommandRunner<void> runner = createTestCommandRunner(flutterCommand);
       await runner.run(<String>['deprecated']);
 
-      expect(testLogger.errorText,
+      expect(testLogger.warningText,
         contains('The "deprecated" command is deprecated and will be removed in '
             'a future version of Flutter.'));
       expect(flutterCommand.usage,
@@ -583,6 +583,28 @@ void main() {
       await runner.run(<String>['dummy', '--initialize-from-dill=/foo/bar.dill']);
       final BuildInfo buildInfo = await flutterCommand.getBuildInfo(forcedBuildMode: BuildMode.debug);
       expect(buildInfo.initializeFromDill, '/foo/bar.dill');
+    }, overrides: <Type, Generator>{
+      FileSystem: () => fileSystem,
+      ProcessManager: () => processManager,
+    });
+
+    testUsingContext('includes assumeInitializeFromDillUpToDate in BuildInfo', () async {
+      final DummyFlutterCommand flutterCommand = DummyFlutterCommand()..usesInitializeFromDillOption(hide: false);
+      final CommandRunner<void> runner = createTestCommandRunner(flutterCommand);
+      await runner.run(<String>['dummy', '--assume-initialize-from-dill-up-to-date']);
+      final BuildInfo buildInfo = await flutterCommand.getBuildInfo(forcedBuildMode: BuildMode.debug);
+      expect(buildInfo.assumeInitializeFromDillUpToDate, isTrue);
+    }, overrides: <Type, Generator>{
+      FileSystem: () => fileSystem,
+      ProcessManager: () => processManager,
+    });
+
+    testUsingContext('unsets assumeInitializeFromDillUpToDate in BuildInfo when disabled', () async {
+      final DummyFlutterCommand flutterCommand = DummyFlutterCommand()..usesInitializeFromDillOption(hide: false);
+      final CommandRunner<void> runner = createTestCommandRunner(flutterCommand);
+      await runner.run(<String>['dummy', '--no-assume-initialize-from-dill-up-to-date']);
+      final BuildInfo buildInfo = await flutterCommand.getBuildInfo(forcedBuildMode: BuildMode.debug);
+      expect(buildInfo.assumeInitializeFromDillUpToDate, isFalse);
     }, overrides: <Type, Generator>{
       FileSystem: () => fileSystem,
       ProcessManager: () => processManager,

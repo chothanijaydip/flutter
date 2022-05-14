@@ -541,7 +541,7 @@ abstract class ImplicitlyAnimatedWidgetState<T extends ImplicitlyAnimatedWidget>
 /// A base class for widgets with implicit animations that need to rebuild their
 /// widget tree as the animation runs.
 ///
-/// This class calls [build] each frame that the animation tickets. For a
+/// This class calls [build] each frame that the animation ticks. For a
 /// variant that does not rebuild each frame, consider subclassing
 /// [ImplicitlyAnimatedWidgetState] directly.
 ///
@@ -1324,8 +1324,8 @@ class _AnimatedPositionedDirectionalState extends AnimatedWidgetBaseState<Animat
 ///       mainAxisAlignment: MainAxisAlignment.center,
 ///       children: <Widget>[
 ///         ElevatedButton(
-///           child: const Text('Scale Logo'),
 ///           onPressed: _changeScale,
+///           child: const Text('Scale Logo'),
 ///         ),
 ///         Padding(
 ///           padding: const EdgeInsets.all(50),
@@ -1455,8 +1455,8 @@ class _AnimatedScaleState extends ImplicitlyAnimatedWidgetState<AnimatedScale> {
 ///       mainAxisAlignment: MainAxisAlignment.center,
 ///       children: <Widget>[
 ///         ElevatedButton(
-///           child: const Text('Rotate Logo'),
 ///           onPressed: _changeRotation,
+///           child: const Text('Rotate Logo'),
 ///         ),
 ///         Padding(
 ///           padding: const EdgeInsets.all(50),
@@ -1673,8 +1673,8 @@ class _AnimatedSlideState extends ImplicitlyAnimatedWidgetState<AnimatedSlide> {
 ///           child: const FlutterLogo(),
 ///         ),
 ///         ElevatedButton(
-///           child: const Text('Fade Logo'),
 ///           onPressed: _changeOpacity,
+///           child: const Text('Fade Logo'),
 ///         ),
 ///       ],
 ///     );
@@ -1945,7 +1945,7 @@ class AnimatedDefaultTextStyle extends ImplicitlyAnimatedWidget {
   /// See [TextWidthBasis] for possible values and their implications.
   final TextWidthBasis textWidthBasis;
 
-  /// {@macro flutter.dart:ui.textHeightBehavior}
+  /// {@macro dart.ui.textHeightBehavior}
   final ui.TextHeightBehavior? textHeightBehavior;
 
   @override

@@ -44,7 +44,7 @@ import 'flutter_features.dart';
 import 'fuchsia/fuchsia_device.dart' show FuchsiaDeviceTools;
 import 'fuchsia/fuchsia_sdk.dart' show FuchsiaSdk, FuchsiaArtifacts;
 import 'fuchsia/fuchsia_workflow.dart' show FuchsiaWorkflow, fuchsiaWorkflow;
-import 'globals_null_migrated.dart' as globals;
+import 'globals.dart' as globals;
 import 'ios/ios_workflow.dart';
 import 'ios/iproxy.dart';
 import 'ios/simulators.dart';
@@ -181,7 +181,6 @@ Future<T> runInContext<T>(
         fileSystem: globals.fs,
         logger: globals.logger,
         flutterProjectFactory: globals.projectFactory,
-        client: globals.httpClientFactory?.call() ?? HttpClient(),
       ),
       DevFSConfig: () => DevFSConfig(),
       DeviceManager: () => FlutterDeviceManager(
@@ -204,6 +203,7 @@ Future<T> runInContext<T>(
           platform: globals.platform,
           featureFlags: featureFlags,
         ),
+        fuchsiaSdk: globals.fuchsiaSdk,
         operatingSystemUtils: globals.os,
         terminal: globals.terminal,
         customDevicesConfig: globals.customDevicesConfig,
@@ -217,6 +217,7 @@ Future<T> runInContext<T>(
         processManager: globals.processManager,
         dartExecutable: globals.artifacts.getHostArtifact(HostArtifact.engineDartBinary).path,
         logger: globals.logger,
+        botDetector: globals.botDetector,
       ),
       Doctor: () => Doctor(logger: globals.logger),
       DoctorValidatorsProvider: () => DoctorValidatorsProvider.defaultInstance,

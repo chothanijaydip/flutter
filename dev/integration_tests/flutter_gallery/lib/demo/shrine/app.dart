@@ -13,7 +13,7 @@ import 'login.dart';
 import 'supplemental/cut_corners_border.dart';
 
 class ShrineApp extends StatefulWidget {
-  const ShrineApp({Key? key}) : super(key: key);
+  const ShrineApp({super.key});
 
   @override
   State<ShrineApp> createState() => _ShrineAppState();
@@ -112,9 +112,7 @@ TextTheme _buildShrineTextTheme(TextTheme base) {
 
 const ColorScheme kShrineColorScheme = ColorScheme(
   primary: kShrinePink100,
-  primaryVariant: kShrineBrown900,
   secondary: kShrinePink50,
-  secondaryVariant: kShrineBrown900,
   surface: kShrineSurfaceWhite,
   background: kShrineBackgroundWhite,
   error: kShrineErrorRed,

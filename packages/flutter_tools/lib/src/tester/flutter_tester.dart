@@ -36,9 +36,6 @@ class FlutterTesterApp extends ApplicationPackage {
 
   @override
   String get name => _directory.basename;
-
-  @override
-  File get packagesFile => _directory.childFile('.packages');
 }
 
 /// The device interface for running on the flutter_tester shell.
@@ -47,7 +44,7 @@ class FlutterTesterApp extends ApplicationPackage {
 /// also be used as a regular device when `--show-test-device` is provided
 /// to the flutter command.
 class FlutterTesterDevice extends Device {
-  FlutterTesterDevice(String deviceId, {
+  FlutterTesterDevice(super.deviceId, {
     required ProcessManager processManager,
     required FlutterVersion flutterVersion,
     required Logger logger,
@@ -61,7 +58,6 @@ class FlutterTesterDevice extends Device {
        _artifacts = artifacts,
        _operatingSystemUtils = operatingSystemUtils,
        super(
-        deviceId,
         platformType: null,
         category: null,
         ephemeral: false,
