@@ -127,7 +127,12 @@ class FakeDeltaTextInputClient implements DeltaTextInputClient {
 
   @override
   void showToolbar() {
-    latestMethodCall = 'showToolbar';
+    latestMethodCall = 'showToolbar';cs
+  }
+
+  @override
+  void commitContent(Map<String, dynamic> content) {
+    latestMethodCall = 'commitContent';
   }
 
   TextInputConfiguration get configuration => const TextInputConfiguration(enableDeltaModel: true);

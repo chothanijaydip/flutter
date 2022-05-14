@@ -158,6 +158,11 @@ class FakeAutofillClient implements TextInputClient, AutofillClient {
   void removeTextPlaceholder() {
     latestMethodCall = 'removeTextPlaceholder';
   }
+
+  @override
+  void commitContent(Map<String, dynamic> content) {
+    latestMethodCall = 'commitContent';
+  }
 }
 
 class FakeAutofillScope with AutofillScopeMixin implements AutofillScope {

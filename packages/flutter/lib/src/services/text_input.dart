@@ -468,6 +468,7 @@ class TextInputConfiguration {
     this.textCapitalization = TextCapitalization.none,
     this.autofillConfiguration = AutofillConfiguration.disabled,
     this.enableIMEPersonalizedLearning = true,
+    this.contentCommitMimeTypes = const <String>[],
     this.enableDeltaModel = false,
   }) : assert(inputType != null),
        assert(obscureText != null),
@@ -479,6 +480,7 @@ class TextInputConfiguration {
        assert(inputAction != null),
        assert(textCapitalization != null),
        assert(enableIMEPersonalizedLearning != null),
+       assert(contentCommitMimeTypes != null),
        assert(enableDeltaModel != null);
 
   /// The type of information for which to optimize the text input control.
@@ -618,6 +620,9 @@ class TextInputConfiguration {
   /// {@endtemplate}
   final bool enableIMEPersonalizedLearning;
 
+  /// {@macro flutter.widgets.editableText.contentCommitMimeTypes}
+  final List<String> contentCommitMimeTypes;
+
   /// Creates a copy of this [TextInputConfiguration] with the given fields
   /// replaced with new values.
   TextInputConfiguration copyWith({
@@ -635,6 +640,7 @@ class TextInputConfiguration {
     TextCapitalization? textCapitalization,
     bool? enableIMEPersonalizedLearning,
     AutofillConfiguration? autofillConfiguration,
+    List<String>? contentCommitMimeTypes,
     bool? enableDeltaModel,
   }) {
     return TextInputConfiguration(
@@ -651,6 +657,7 @@ class TextInputConfiguration {
       keyboardAppearance: keyboardAppearance ?? this.keyboardAppearance,
       enableIMEPersonalizedLearning: enableIMEPersonalizedLearning?? this.enableIMEPersonalizedLearning,
       autofillConfiguration: autofillConfiguration ?? this.autofillConfiguration,
+      contentCommitMimeTypes: contentCommitMimeTypes ?? this.contentCommitMimeTypes,
       enableDeltaModel: enableDeltaModel ?? this.enableDeltaModel,
     );
   }
@@ -699,6 +706,7 @@ class TextInputConfiguration {
       'enableIMEPersonalizedLearning': enableIMEPersonalizedLearning,
       if (autofill != null) 'autofill': autofill,
       'enableDeltaModel' : enableDeltaModel,
+      'contentCommitMimeTypes': contentCommitMimeTypes,
     };
   }
 }
@@ -1080,6 +1088,9 @@ abstract class TextInputClient {
 
   /// Requests that this client perform the given action.
   void performAction(TextInputAction action);
+
+  /// Notify client about new content insertion from Android keyboard.
+  void commitContent(Map<String, dynamic> content);
 
   /// Request from the input method that this client perform the given private
   /// command.
@@ -1743,7 +1754,11 @@ class TextInput {
         (_currentConnection!._client as DeltaTextInputClient).updateEditingValueWithDeltas(deltas);
         break;
       case 'TextInputClient.performAction':
-        _currentConnection!._client.performAction(_toTextInputAction(args[1] as String));
+        if (args[1] as String == 'TextInputAction.commitContent') {
+          _currentConnection!._client.commitContent(args[2] as Map<String, dynamic>);
+        } else {
+          _currentConnection!._client.performAction(_toTextInputAction(args[1] as String));
+        }
         break;
       case 'TextInputClient.performPrivateCommand':
         final Map<String, dynamic> firstArg = args[1] as Map<String, dynamic>;
